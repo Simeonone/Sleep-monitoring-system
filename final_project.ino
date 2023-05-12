@@ -35,7 +35,79 @@
 /* Includes ---------------------------------------------------------------- */
 #include <PDM.h>
 #include <simeonsimano-project-1_inferencing.h>
+#include <Arduino.h>
+#include <stdlib.h>
+// foreign - start
 
+
+float sum1 = 0;
+float sum2 = 0;
+struct Node {
+  int data;
+  Node* left;
+  Node* right;
+
+  Node(int value) {
+    data = value;
+    left = NULL;
+    right = NULL;
+  }
+};
+
+class Tree {
+private:
+  Node* root;
+
+public:
+  Tree() {
+    root = NULL;
+  }
+
+  void insert(int value) {
+    if (root == NULL) {
+      root = new Node(value);
+    } else {
+      insertRecursive(root, value);
+    }
+  }
+
+  void insertRecursive(Node* current, int value) {
+    if (value < current->data) {
+      if (current->left == NULL) {
+        current->left = new Node(value);
+      } else {
+        insertRecursive(current->left, value);
+      }
+    } else {
+      if (current->right == NULL) {
+        current->right = new Node(value);
+      } else {
+        insertRecursive(current->right, value);
+      }
+    }
+  }
+
+  bool search(int value) {
+    return searchRecursive(root, value);
+  }
+
+  bool searchRecursive(Node* current, int value) {
+    if (current == NULL) {
+      return false;
+    }
+
+    if (value == current->data) {
+      return true;
+    } else if (value < current->data) {
+      return searchRecursive(current->left, value);
+    } else {
+      return searchRecursive(current->right, value);
+    }
+  }
+};
+
+
+// foreign -end
 /** Audio buffers, pointers and selectors */
 typedef struct {
     int16_t *buffer;
